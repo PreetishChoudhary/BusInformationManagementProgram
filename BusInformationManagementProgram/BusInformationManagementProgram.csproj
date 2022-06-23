@@ -46,18 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateRecordForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CreateRecordForm.Designer.cs">
-      <DependentUpon>CreateRecordForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EditRecordForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="EditRecordForm.Designer.cs">
-      <DependentUpon>EditRecordForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,9 +54,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CreateRecordForm.resx">
-      <DependentUpon>CreateRecordForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
