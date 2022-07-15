@@ -31,14 +31,14 @@ namespace BusInformationManagementProgram
         {
             this.lblBIMPFull = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.lblBIMPTitle = new System.Windows.Forms.Label();
-            this.lblViewDataFor = new System.Windows.Forms.Label();
             this.busNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ArrivalStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivalTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.departureTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.arrivalDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.lblBIMPTitle = new System.Windows.Forms.Label();
+            this.lblViewDataFor = new System.Windows.Forms.Label();
+            this.cmbBxBuses = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,26 +67,6 @@ namespace BusInformationManagementProgram
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1160, 377);
             this.dataGridView1.TabIndex = 6;
-            // 
-            // lblBIMPTitle
-            // 
-            this.lblBIMPTitle.AutoSize = true;
-            this.lblBIMPTitle.Font = new System.Drawing.Font("Calibri", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBIMPTitle.Location = new System.Drawing.Point(539, 9);
-            this.lblBIMPTitle.Name = "lblBIMPTitle";
-            this.lblBIMPTitle.Size = new System.Drawing.Size(89, 39);
-            this.lblBIMPTitle.TabIndex = 1;
-            this.lblBIMPTitle.Text = "BIMP";
-            // 
-            // lblViewDataFor
-            // 
-            this.lblViewDataFor.AutoSize = true;
-            this.lblViewDataFor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblViewDataFor.Location = new System.Drawing.Point(22, 84);
-            this.lblViewDataFor.Name = "lblViewDataFor";
-            this.lblViewDataFor.Size = new System.Drawing.Size(114, 20);
-            this.lblViewDataFor.TabIndex = 8;
-            this.lblViewDataFor.Text = "View Data For:";
             // 
             // busNumber
             // 
@@ -118,20 +98,41 @@ namespace BusInformationManagementProgram
             this.arrivalDate.HeaderText = "Date";
             this.arrivalDate.Name = "arrivalDate";
             // 
-            // dateTimePicker1
+            // lblBIMPTitle
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(142, 84);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 9;
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            this.lblBIMPTitle.AutoSize = true;
+            this.lblBIMPTitle.Font = new System.Drawing.Font("Calibri", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBIMPTitle.Location = new System.Drawing.Point(539, 9);
+            this.lblBIMPTitle.Name = "lblBIMPTitle";
+            this.lblBIMPTitle.Size = new System.Drawing.Size(89, 39);
+            this.lblBIMPTitle.TabIndex = 1;
+            this.lblBIMPTitle.Text = "BIMP";
+            // 
+            // lblViewDataFor
+            // 
+            this.lblViewDataFor.AutoSize = true;
+            this.lblViewDataFor.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblViewDataFor.Location = new System.Drawing.Point(22, 84);
+            this.lblViewDataFor.Name = "lblViewDataFor";
+            this.lblViewDataFor.Size = new System.Drawing.Size(146, 20);
+            this.lblViewDataFor.TabIndex = 8;
+            this.lblViewDataFor.Text = "View Data For Bus:";
+            // 
+            // cmbBxBuses
+            // 
+            this.cmbBxBuses.FormattingEnabled = true;
+            this.cmbBxBuses.Location = new System.Drawing.Point(174, 86);
+            this.cmbBxBuses.Name = "cmbBxBuses";
+            this.cmbBxBuses.Size = new System.Drawing.Size(121, 21);
+            this.cmbBxBuses.TabIndex = 9;
+            this.cmbBxBuses.SelectedIndexChanged += new System.EventHandler(this.cmbBxBuses_SelectedIndexChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 661);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.cmbBxBuses);
             this.Controls.Add(this.lblViewDataFor);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.lblBIMPFull);
@@ -155,7 +156,7 @@ namespace BusInformationManagementProgram
         private System.Windows.Forms.DataGridViewTextBoxColumn arrivalTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn departureTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn arrivalDate;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.ComboBox cmbBxBuses;
     }
 }
 

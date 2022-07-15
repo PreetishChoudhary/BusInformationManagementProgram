@@ -91,10 +91,10 @@ namespace BusInformationManagementProgram
             }
         }
 
-        public void DisplayData()
+        public void DisplayData(int busIndex)
         {
-            for(int i = 0; i<busRecord.Length; i++) {
-                BusRecord b = busRecord[0];
+            for(int i = busRecordArray[busIndex].Length -1; i>-1; i--) {
+                BusRecord b = busRecordArray[busIndex][i];
                 string status;
                 try
                 {
@@ -116,6 +116,15 @@ namespace BusInformationManagementProgram
             }
         }
 
+        void FillComboBox(string filePath)
+        {
+            string[] fileText = System.IO.File.ReadAllLines(filePath);
+            foreach (string line in fileText)
+            {
+                cmbBxBuses.Items.Add(line);
+            }
+        }
+
 
         public MainForm()
         {
@@ -123,21 +132,22 @@ namespace BusInformationManagementProgram
         }
 
         BusRecord[] busRecord;
-        Array[] busRecordArray = new Array[21];
+        List<BusRecord[]> busRecordArray = new List<BusRecord[]>();
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            string date = dateTimePicker1.Value.ToString("ddMMyy");
-            ReadFile(18, "school");
-            DisplayData();
+            FillComboBox("BusList.txt");
+
+            for (int i = 1; i < 22; i++)
+            {
+                ReadFile(i, "school");
+                busRecordArray.Add(busRecord);
+            }
         }
 
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        private void cmbBxBuses_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dataGridView1.Rows.Clear();
-            string date = dateTimePicker1.Value.ToString("ddMMyy");
-            ReadFile(18, "school");
-            DisplayData();
+            DisplayData(Convert.ToInt32(cmbBxBuses.SelectedIndex.ToString()));
         }
     }
 }
