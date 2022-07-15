@@ -56,7 +56,7 @@ namespace BusInformationManagementProgram
 
         public void ReadFile(int busNumber, string type)
         {
-            if(type == "school")
+            if (type == "school")
             {
                 type = "SchoolBuses/";
             }
@@ -65,7 +65,7 @@ namespace BusInformationManagementProgram
                 type = "SportBuses/";
             }
             XmlDocument doc = new XmlDocument();
-            doc.Load(type +"BusData_"+busNumber+".xml");
+            doc.Load(type + "BusData_" + busNumber + ".xml");
 
             XmlNodeList xmlBusRecord = doc.GetElementsByTagName("BusData");
 
@@ -74,8 +74,8 @@ namespace BusInformationManagementProgram
             int index = 0;
             foreach (XmlNode busData in xmlBusRecord)
             {
-                BusRecord b = new BusRecord();
                 int arrivalDate = Convert.ToInt32(busData.Attributes["date"].Value);
+                BusRecord b = new BusRecord();
                 int arrivalTime = Convert.ToInt32(busData["arrivalTime"].InnerText);
                 int departTime = Convert.ToInt32(busData["departureTime"].InnerText);
                 bool status = Convert.ToBoolean(busData["atSchool"].InnerText);
@@ -93,18 +93,27 @@ namespace BusInformationManagementProgram
 
         public void DisplayData()
         {
-            BusRecord b = busRecord[0];
-            string status;
-            if(b.atSchool == true)
-            {
-                status = "Yes";
+            for(int i = 0; i<busRecord.Length; i++) {
+                BusRecord b = busRecord[0];
+                string status;
+                try
+                {
+                    if (b.atSchool == true)
+                    {
+                        status = "Yes";
+                    }
+                    else
+                    {
+                        status = "No";
+                    }
+                    string[] data = { b.busNumber.ToString(), status, dateTimeFormat(b.arrivalTime, "time"), dateTimeFormat(b.departTime, "time"), dateTimeFormat(b.arrivalDate, "date") };
+                    dataGridView1.Rows.Add(data);
+                }
+                catch
+                {
+                    
+                }
             }
-            else
-            {
-                status = "No";
-            }
-            string[] data = { b.busNumber.ToString(), status, dateTimeFormat(b.arrivalTime, "time"), dateTimeFormat(b.departTime, "time"), dateTimeFormat(b.arrivalDate, "date") };
-            dataGridView1.Rows.Add(data);
         }
 
 
@@ -114,8 +123,19 @@ namespace BusInformationManagementProgram
         }
 
         BusRecord[] busRecord;
+        Array[] busRecordArray = new Array[21];
+
         private void MainForm_Load(object sender, EventArgs e)
         {
+            string date = dateTimePicker1.Value.ToString("ddMMyy");
+            ReadFile(18, "school");
+            DisplayData();
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            dataGridView1.Rows.Clear();
+            string date = dateTimePicker1.Value.ToString("ddMMyy");
             ReadFile(18, "school");
             DisplayData();
         }
