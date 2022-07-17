@@ -42,15 +42,20 @@ namespace BusInformationManagementProgram
             if(type == "date")
             {
                 string date = Convert.ToString(dateTime);
-                date.Insert(date.Length - 2, ":");
-                return date;
+                string formattedDate = date.Substring(0, date.Length - 4) + "/" + date.Substring(date.Length - 4, date.Length - 4) + "/" + date.Substring(date.Length - 2);
+                return formattedDate;
 
             }
             else
             {
+                string timeEnding = " PM";
                 string time = Convert.ToString(dateTime);
-                time.Insert(time.Length - 2, ":");
-                return time;
+                if (dateTime < 1200)
+                {
+                    timeEnding = " AM";
+                }
+                string formattedTime = time.Substring(0, time.Length - 2) + ":" + time.Substring(time.Length - 2) + timeEnding;
+                return formattedTime;
             }
         }
 
@@ -93,26 +98,20 @@ namespace BusInformationManagementProgram
 
         public void DisplayData(int busIndex)
         {
+            dataGridView1.Rows.Clear();
             for(int i = busRecordArray[busIndex].Length -1; i>-1; i--) {
                 BusRecord b = busRecordArray[busIndex][i];
                 string status;
-                try
+                if (b.atSchool == true)
                 {
-                    if (b.atSchool == true)
-                    {
-                        status = "Yes";
-                    }
-                    else
-                    {
-                        status = "No";
-                    }
-                    string[] data = { b.busNumber.ToString(), status, dateTimeFormat(b.arrivalTime, "time"), dateTimeFormat(b.departTime, "time"), dateTimeFormat(b.arrivalDate, "date") };
-                    dataGridView1.Rows.Add(data);
+                    status = "Yes";
                 }
-                catch
+                else
                 {
-                    
+                    status = "No";
                 }
+                string[] data = { b.busNumber.ToString(), status, dateTimeFormat(b.arrivalTime, "time"), dateTimeFormat(b.departTime, "time"), dateTimeFormat(b.arrivalDate, "date") };
+                dataGridView1.Rows.Add(data);
             }
         }
 
