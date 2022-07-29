@@ -22,40 +22,32 @@ namespace BusInformationManagementProgram
             public bool atSchool;
         }
 
-        void GetTime()
+        public string DateTimeFormat(int dateTime, string type)
         {
-
-        }
-
-        public bool CheckStatus()
-        {
-            return true;
-        }
-
-        public void CreateEntry()
-        {
-
-        }
-
-        public string dateTimeFormat(int dateTime, string type)
-        {
-            if(type == "date")
+            if (dateTime != 0)
             {
-                string date = Convert.ToString(dateTime);
-                string formattedDate = date.Substring(0, date.Length - 4) + "/" + date.Substring(date.Length - 4, date.Length - 4) + "/" + date.Substring(date.Length - 2);
-                return formattedDate;
+                if (type == "date")
+                {
+                    string date = Convert.ToString(dateTime);
+                    string formattedDate = date.Substring(0, date.Length - 4) + "/" + date.Substring(date.Length - 4, date.Length - 4) + "/" + date.Substring(date.Length - 2);
+                    return formattedDate;
 
+                }
+                else
+                {
+                    string timeEnding = " PM";
+                    string time = Convert.ToString(dateTime);
+                    if (dateTime < 1200)
+                    {
+                        timeEnding = " AM";
+                    }
+                    string formattedTime = time.Substring(0, time.Length - 2) + ":" + time.Substring(time.Length - 2) + timeEnding;
+                    return formattedTime;
+                }
             }
             else
             {
-                string timeEnding = " PM";
-                string time = Convert.ToString(dateTime);
-                if (dateTime < 1200)
-                {
-                    timeEnding = " AM";
-                }
-                string formattedTime = time.Substring(0, time.Length - 2) + ":" + time.Substring(time.Length - 2) + timeEnding;
-                return formattedTime;
+                return "- - - -";
             }
         }
 
@@ -99,8 +91,23 @@ namespace BusInformationManagementProgram
         public void DisplayData(int busIndex)
         {
             dataGridView1.Rows.Clear();
-            for(int i = busRecordArray[busIndex].Length -1; i>-1; i--) {
-                BusRecord b = busRecordArray[busIndex][i];
+            BusRecord[] tempRecord;
+            if(cmbBxBusTypes.SelectedIndex == 1)
+            {
+                tempRecord = sportBusRecordArray[busIndex];
+            }
+            else
+            {
+                tempRecord = busRecordArray[busIndex];
+            }
+
+            int averageArrivalTime = 0;
+            int averageDepartureTime = 0;
+            int arrivalCount = 0;
+            int departCount = 0;
+
+            for(int i = tempRecord.Length -1; i>-1; i--) {
+                BusRecord b = tempRecord[i];
                 string status;
                 if (b.atSchool == true)
                 {
@@ -110,20 +117,44 @@ namespace BusInformationManagementProgram
                 {
                     status = "No";
                 }
-                string[] data = { b.busNumber.ToString(), status, dateTimeFormat(b.arrivalTime, "time"), dateTimeFormat(b.departTime, "time"), dateTimeFormat(b.arrivalDate, "date") };
+                string[] data = { b.busNumber.ToString(), status, DateTimeFormat(b.arrivalTime, "time"), DateTimeFormat(b.departTime, "time"), DateTimeFormat(b.arrivalDate, "date") };
                 dataGridView1.Rows.Add(data);
+
+                if (cmbBxBusTypes.SelectedIndex == 0)
+                {
+                    if (b.arrivalTime > 700 && b.departTime < 1000)
+                    {
+                        averageArrivalTime += b.arrivalTime;
+                        averageDepartureTime += b.departTime;
+                        arrivalCount += 1;
+                        departCount += 1;
+                    }
+                }
+                else
+                {
+                    if (b.arrivalTime < 1900 && b.departTime > 1200)
+                    {
+                        averageArrivalTime += b.arrivalTime;
+                        averageDepartureTime += b.departTime;
+                        arrivalCount += 1;
+                        departCount += 1;
+                    }
+                }
             }
+
+            lblAvgArrTimeValue.Text = DateTimeFormat(averageArrivalTime / arrivalCount, "time");
+            lblAvgDeptTimeValue.Text = DateTimeFormat(averageDepartureTime / departCount, "time");
         }
 
         void FillComboBox(string filePath)
         {
+            cmbBxBuses.Items.Clear();
             string[] fileText = System.IO.File.ReadAllLines(filePath);
             foreach (string line in fileText)
             {
                 cmbBxBuses.Items.Add(line);
             }
         }
-
 
         public MainForm()
         {
@@ -132,21 +163,44 @@ namespace BusInformationManagementProgram
 
         BusRecord[] busRecord;
         List<BusRecord[]> busRecordArray = new List<BusRecord[]>();
+        List<BusRecord[]> sportBusRecordArray = new List<BusRecord[]>();
+        string[] busTypes = new string[] { "School", "Sport" };
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            FillComboBox("BusList.txt");
+            cmbBxBusTypes.Items.AddRange(busTypes);
 
             for (int i = 1; i < 22; i++)
             {
                 ReadFile(i, "school");
                 busRecordArray.Add(busRecord);
             }
+            for (int i = 1; i < 7; i++)
+            {
+                ReadFile(i, "sport");
+                sportBusRecordArray.Add(busRecord);
+            }
         }
 
         private void cmbBxBuses_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisplayData(Convert.ToInt32(cmbBxBuses.SelectedIndex.ToString()));
+            if (cmbBxBuses.SelectedIndex != -1)
+            {
+                DisplayData(Convert.ToInt32(cmbBxBuses.SelectedIndex.ToString()));
+            }
+        }
+
+        private void cmbBxBusTypes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cmbBxBuses.SelectedIndex = -1;
+
+            if (cmbBxBusTypes.SelectedIndex == 1) {
+                FillComboBox("SportsBusList.txt");
+            }
+            else
+            {
+                FillComboBox("BusList.txt");
+            }
         }
     }
 }
